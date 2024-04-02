@@ -20,13 +20,13 @@ class FPNode {
     }
 }
 
-public class A1_G9_t1 {
+public class A1_G9_t2 {
     private Map<String, Integer> headerTable;
     private FPNode root;
     private double minSupport;
     private List<List<String>> transactions;
 
-    public A1_G9_t1(String filename, double minSupport) {
+    public A1_G9_t2(String filename, double minSupport) {
         this.minSupport = minSupport;
         this.transactions = new ArrayList<>();
         this.headerTable = new HashMap<>();
@@ -100,7 +100,7 @@ public class A1_G9_t1 {
     public static void main(String[] args) {
         String filename = args[0];
         double minSupport = Double.parseDouble(args[1]);
-        A1_G9_t1 fpgrowth = new A1_G9_t1(filename, minSupport);
+        A1_G9_t2 fpgrowth = new A1_G9_t2(filename, minSupport);
         fpgrowth.mineFrequentItemsets();
     }
 }
