@@ -98,9 +98,16 @@ public class A1_G9_t2 {
     }
 
     public static void main(String[] args) {
+    	
+    	long startTime = System.currentTimeMillis();
+    	
         String filename = args[0];
         double minSupport = Double.parseDouble(args[1]);
         A1_G9_t2 fpgrowth = new A1_G9_t2(filename, minSupport);
         fpgrowth.mineFrequentItemsets();
+        
+        long endTime = System.currentTimeMillis();
+        long duration = endTime - startTime;
+        System.out.println("Execution Time: " + duration + " milliseconds");
     }
 }
