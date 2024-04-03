@@ -25,11 +25,13 @@ public class A1_G9_t2 {
     private FPNode root;
     private double minSupport;
     private List<List<String>> transactions;
+    private List<List<String>> frequentItemsets;
 
     public A1_G9_t2(String filename, double minSupport) {
         this.minSupport = minSupport;
         this.transactions = new ArrayList<>();
         this.headerTable = new LinkedHashMap<>();
+        this.frequentItemsets = new ArrayList<>();
         readTransactions(filename);
         
 //        if (!transactions.isEmpty()) {
@@ -160,9 +162,40 @@ public class A1_G9_t2 {
     }
     
     private void printFrequentItemsets() {
-        for (Map.Entry<String, Integer> entry : headerTable.entrySet()) {
-            double support = (double) entry.getValue() / transactions.size();
-            System.out.printf("%s %.7f\n", entry.getKey(), support);
+        List<Map.Entry<List<String>, Double>> itemsetsWithSupport = new ArrayList<>();
+        for (List<String> itemset : frequentItemsets) {
+            double support = calculateSupport(itemset);
+            if (support >= minSupport) {
+                itemsetsWithSupport.add(new AbstractMap.SimpleEntry<>(itemset, support));
+            }
+        }
+        Collections.sort(itemsetsWithSupport, Comparator.comparing(Map.Entry::getValue));
+        for (Map.Entry<List<String>, Double> entry : itemsetsWithSupport) {
+            System.out.printf("%s %.7f\n", entry.getKey(), entry.getValue());
+        }
+    }
+    
+    private double calculateSupport(List<String> itemset) {
+        int count = 0;
+        for (List<String> transaction : transactions) {
+            if (transaction.containsAll(itemset)) {
+                count++;
+            }
+        }
+        return (double) count / transactions.size();
+    }
+    
+    private void mineFrequentItemsetsRecursive(FPNode currentNode, List<String> prefix) {
+        if (currentNode.children.isEmpty()) {
+            return;
+        }
+
+        for (FPNode child : currentNode.children) {
+            List<String> itemset = new ArrayList<>(prefix);
+            itemset.add(child.itemName);
+            frequentItemsets.add(itemset);
+
+            mineFrequentItemsetsRecursive(child, itemset);
         }
     }
 
@@ -170,6 +203,7 @@ public class A1_G9_t2 {
         findFrequent1Itemsets();
         sortFList();
         buildFPtree();
+        mineFrequentItemsetsRecursive(root, new ArrayList<>());
         printFrequentItemsets();
     }
 
