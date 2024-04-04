@@ -107,8 +107,13 @@ public class A1_G9_t2 {
     
     private void buildFPtree() {
         root = new FPNode(null, 0, null);
+                
         for (List<String> transaction : transactions) {
-            FPNode currentNode = root;
+        	
+        	// Sort items in the transaction based on their support values in descending order
+            transaction.sort(Comparator.comparingDouble(item -> headerTable.getOrDefault(item, 0)).reversed());
+            
+        	FPNode currentNode = root;
             for (String item : transaction) {
                 if (headerTable.containsKey(item)) {
                     FPNode child = findChild(currentNode, item);
@@ -198,11 +203,13 @@ public class A1_G9_t2 {
             mineFrequentItemsetsRecursive(child, itemset);
         }
     }
-
+    
     public void mineFrequentItemsets() {
         findFrequent1Itemsets();
         sortFList();
         buildFPtree();
+       
+        
         mineFrequentItemsetsRecursive(root, new ArrayList<>());
         printFrequentItemsets();
     }
