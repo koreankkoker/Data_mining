@@ -97,11 +97,12 @@ public class A1_G9_t2 {
             headerTable.put(entry.getKey(), entry.getValue());
         }
         
-        // Print the contents of the headerTable HashMap
+/*        // Print the contents of the headerTable HashMap
         System.out.println("Frequent 1-itemsets:");        
         for (Map.Entry<String, Integer> entry : headerTable.entrySet()) {
         	System.out.println(entry.getKey() + ": " + (double) entry.getValue() / transactions.size());
         }
+*/
         
     }
     
